@@ -67,18 +67,22 @@ mysql -u root --password="$mysql_admin_random_pass" < createzabbixuser.sql
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/schema.sql 
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/images.sql 
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/data.sql 
-} &> /dev/null
 echo " ok"
 
 # update zabbix.conf.php file
-{
 sed -i zabbix.conf.php "9s/'';/'$mysql_random_pass';/g" /usr/local/www/zabbix5/conf/zabbix.conf.php
 chown -R www:www /usr/local/www/zabbix5/conf/ 
-} &> /dev/null
 
 # Add DB password to zabbix server config
-{
 sed -i zabbix_server.conf "s/# DBPassword=/DBPassword=$mysql_random_pass/g" /usr/local/etc/zabbix5/zabbix_server.conf
+
+#Adding Usernames and passwords to post install notes
+echo "Adding post install notes"
+ echo "Mysql Root Password: $mysql_admin_random_pass" > /root/PLUGIN_INFO
+ echo "Mysql zabbix DB: zabbix" >> /root/PLUGIN_INFO
+ echo "Mysql zabbix User: zabbix" >> /root/PLUGIN_INFO
+ echo "Mysql zabbix Password: $mysql_random_pass" >> /root/PLUGIN_INFO
+echo "Complete!"
 } &> /dev/null
 
 # Starting services
@@ -90,11 +94,3 @@ service zabbix_server start
 service php-fpm start 
 } &> /dev/null
 echo " ok"
-
-#Adding Usernames and passwords to post install notes
-echo "Adding post install notes"
- echo "Mysql Root Password: $mysql_admin_random_pass" > /root/PLUGIN_INFO
- echo "Mysql zabbix DB: zabbix" >> /root/PLUGIN_INFO
- echo "Mysql zabbix User: zabbix" >> /root/PLUGIN_INFO
- echo "Mysql zabbix Password: $mysql_random_pass" >> /root/PLUGIN_INFO
-echo "Complete!"
