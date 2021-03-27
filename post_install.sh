@@ -67,7 +67,6 @@ mysql -u root --password="$mysql_admin_random_pass" < createzabbixuser.sql
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/schema.sql 
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/images.sql 
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/data.sql 
-echo " ok"
 
 # update zabbix.conf.php file
 sed -i zabbix.conf.php "9s/'';/'$mysql_random_pass';/g" /usr/local/www/zabbix5/conf/zabbix.conf.php
@@ -82,6 +81,7 @@ sed -i zabbix_server.conf "s/# DBPassword=/DBPassword=$mysql_random_pass/g" /usr
  echo "Mysql zabbix User: zabbix" >> /root/PLUGIN_INFO
  echo "Mysql zabbix Password: $mysql_random_pass" >> /root/PLUGIN_INFO
 } &> /dev/null
+echo " ok"
 
 # Starting services
 echo -n "Staring services..."
