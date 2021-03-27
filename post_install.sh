@@ -66,5 +66,4 @@ service zabbix_agentd start
 service zabbix_server start
 service php-fpm start
 echo -n " ok"
-
-echo -n " SQL Pass: $mysql_random_pass"
+echo "Complete!"
