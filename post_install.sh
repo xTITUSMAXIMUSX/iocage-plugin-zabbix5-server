@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #enable all services
 echo -n "Enabling all services"
