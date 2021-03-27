@@ -56,7 +56,7 @@ mysql -u root -p$mysql_admin_pass zabbix < /usr/local/share/zabbix5/server/datab
 echo -n " ok"
 
 # update zabbix.conf.php file
-sed -i zabbix.conf.php "9s/'';/'$mysql_random_pass';/g" /usr/local/www/zabbix5/conf/zabbix.conf.php
+sed -i zabbix.conf.php "9s/'';/'$mysql_admin_pass';/g" /usr/local/www/zabbix5/conf/zabbix.conf.php
 chown -R www:www /usr/local/www/zabbix5/conf/
 
 # Starting services
