@@ -47,12 +47,13 @@ service mysql-server start
 mysql_random_pass=$(openssl rand -hex 10)
 mysql_admin_pass=$(awk NR==2 /root/.mysql_secret)
 mysql_admin_random_pass=$(openssl rand -hex 10)
-echo "create database zabbix character set utf8 collate utf8_bin;" >> create.sql
-echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '$mysql_admin_random_pass'; flush privileges;" >> create.sql
-echo "CREATE USER 'zabbix'@'localhost' IDENTIFIED BY '$mysql_random_pass';" >> create.sql
+echo "set password = password('$mysql_admin_random_pass'); flush privileges;" >> updateroot.sql
+echo "create database zabbix character set utf8 collate utf8_bin;" >> createzabbixuser.sql
+echo "CREATE USER 'zabbix'@'localhost' IDENTIFIED BY '$mysql_random_pass';" >> createzabbixuser.sql
 #echo "ALTER USER 'zabbix'@'localhost' IDENTIFIED WITH mysql_native_password BY '$mysql_random_pass';" >> create.sql
-echo "GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'localhost';" >> create.sql
-mysql -u root --password="$mysql_admin_pass" --connect-expired-password < create.sql
+echo "GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'localhost';" >> createzabbixuser.sql
+mysql -u root --password="$mysql_admin_pass" --connect-expired-password < updateroot.sql
+mysql -u root --password="$mysql_admin_random_pass" < createzabbixuser.sql
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/schema.sql
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/images.sql
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/data.sql
