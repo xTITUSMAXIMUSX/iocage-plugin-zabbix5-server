@@ -61,7 +61,7 @@ echo -n "Staring services"
 service nginx start
 service zabbix_agentd start
 service zabbix_server start
-service php_fpm start
+service php-fpm start
 echo -n " ok"
 
 echo -n " SQL Pass: $mysql_random_pass"
