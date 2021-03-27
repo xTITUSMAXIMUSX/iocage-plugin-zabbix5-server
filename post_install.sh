@@ -50,7 +50,6 @@ mysql_admin_random_pass=$(openssl rand -hex 10)
 echo "set password = password('$mysql_admin_random_pass'); flush privileges;" >> updateroot.sql
 echo "create database zabbix character set utf8 collate utf8_bin;" >> createzabbixuser.sql
 echo "CREATE USER 'zabbix'@'localhost' IDENTIFIED BY '$mysql_random_pass';" >> createzabbixuser.sql
-#echo "ALTER USER 'zabbix'@'localhost' IDENTIFIED WITH mysql_native_password BY '$mysql_random_pass';" >> create.sql
 echo "GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'localhost';" >> createzabbixuser.sql
 mysql -u root --password="$mysql_admin_pass" --connect-expired-password < updateroot.sql
 mysql -u root --password="$mysql_admin_random_pass" < createzabbixuser.sql
@@ -62,6 +61,9 @@ echo -n " ok"
 # update zabbix.conf.php file
 sed -i zabbix.conf.php "9s/'';/'$mysql_random_pass';/g" /usr/local/www/zabbix5/conf/zabbix.conf.php
 chown -R www:www /usr/local/www/zabbix5/conf/
+
+# Add DB password to zabbix server config
+sed -i zabbix_server.conf "s/# DBPassword=/DBPassword=$mysql_random_pass/g" /usr/local/etc/zabbix5/zabbix_server.conf
 
 # Starting services
 echo -n "Staring services"
