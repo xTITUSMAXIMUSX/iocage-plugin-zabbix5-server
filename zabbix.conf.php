@@ -5,7 +5,7 @@ $DB['TYPE']                             = 'MYSQL';
 $DB['SERVER']                   = 'localhost';
 $DB['PORT']                             = '0';
 $DB['DATABASE']                 = 'zabbix';
-$DB['USER']                             = 'zabbix';
+$DB['USER']                             = 'root';
 $DB['PASSWORD'] = '';
 
 // Schema name. Used for PostgreSQL.
