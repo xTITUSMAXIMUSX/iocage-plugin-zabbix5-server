@@ -13,7 +13,6 @@ echo " ok"
 echo -n "Creating Zabbix config files"
  cp /usr/local/etc/zabbix5/zabbix_agentd.conf.sample /usr/local/etc/zabbix5/zabbix_agentd.conf
  cp /usr/local/etc/zabbix5/zabbix_server.conf.sample /usr/local/etc/zabbix5/zabbix_server.conf
- chown -R www:www /usr/local/www/zabbix5/conf/
 echo " ok"
 
 # update nginx conf
@@ -54,6 +53,10 @@ mysql -u root zabbix < /usr/local/share/zabbix5/server/database/mysql/images.sql
 mysql -u root zabbix < /usr/local/share/zabbix5/server/database/mysql/data.sql
 echo -n " ok"
 
+# update zabbix.conf.php file
+sed -i zabbix.conf.php "9s/'';/'$mysql_random_pass'/g" /usr/local/www/zabbix5/conf/zabbix.conf.php
+chown -R www:www /usr/local/www/zabbix5/conf/
+
 # Starting services
 echo -n "Staring services"
 service nignx start
@@ -61,3 +64,5 @@ service zabbix_agentd start
 service zabbix_server start
 service php_fpm start
 echo -n " ok"
+
+echo -n " SQL Pass: $mysql_random_pass"
