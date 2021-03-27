@@ -58,7 +58,7 @@ chown -R www:www /usr/local/www/zabbix5/conf/
 
 # Starting services
 echo -n "Staring services"
-service nignx start
+service nginx start
 service zabbix_agentd start
 service zabbix_server start
 service php_fpm start
