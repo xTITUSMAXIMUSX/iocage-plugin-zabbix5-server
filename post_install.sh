@@ -12,7 +12,7 @@ echo " ok"
 # Copy sample files to config files
 echo -n "Creating Zabbix config files"
 ZABBIX_CONFIG_URI="https://raw.githubusercontent.com/xTITUSMAXIMUSX/iocage-plugin-zabbix5-server/master/zabbix.conf.php"
-/usr/bin/fetch -o /usr/local/etc/nginx/nginx.conf ${ZABBIX_CONFIG_URI}
+/usr/bin/fetch -o /usr/local/www/zabbix5/conf/zabbix.conf.php ${ZABBIX_CONFIG_URI}
 cp /usr/local/etc/zabbix5/zabbix_agentd.conf.sample /usr/local/etc/zabbix5/zabbix_agentd.conf
 cp /usr/local/etc/zabbix5/zabbix_server.conf.sample /usr/local/etc/zabbix5/zabbix_server.conf
 echo " ok"
