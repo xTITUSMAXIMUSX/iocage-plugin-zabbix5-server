@@ -67,9 +67,9 @@ sed -i zabbix_server.conf "s/# DBPassword=/DBPassword=$mysql_random_pass/g" /usr
 
 #Adding Usernames and passwords to post install notes
 echo "Mysql Root Password: $mysql_admin_random_pass" > /root/PLUGIN_INFO
- echo "Mysql zabbix DB: zabbix" >> /root/PLUGIN_INFO
- echo "Mysql zabbix User: zabbix" >> /root/PLUGIN_INFO
- echo "Mysql zabbix Password: $mysql_random_pass" >> /root/PLUGIN_INFO
+echo "Mysql zabbix DB: zabbix" >> /root/PLUGIN_INFO
+echo "Mysql zabbix User: zabbix" >> /root/PLUGIN_INFO
+echo "Mysql zabbix Password: $mysql_random_pass" >> /root/PLUGIN_INFO
 
 # Starting services
 echo -n "Staring services..."
