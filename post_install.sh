@@ -52,7 +52,7 @@ echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '$mysql_admin_random_pass'; fl
 echo "CREATE USER 'zabbix'@'localhost' IDENTIFIED BY '$mysql_random_pass';" >> create.sql
 #echo "ALTER USER 'zabbix'@'localhost' IDENTIFIED WITH mysql_native_password BY '$mysql_random_pass';" >> create.sql
 echo "GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'localhost';" >> create.sql
-mysql -u root --password="$mysql_admin_pass" --connect-expired-password < reset_pass.sql
+mysql -u root --password="$mysql_admin_pass" --connect-expired-password < create.sql
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/schema.sql
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/images.sql
 mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/data.sql
