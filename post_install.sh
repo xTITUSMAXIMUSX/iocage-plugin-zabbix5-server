@@ -25,7 +25,6 @@ echo " ok"
 
 # Update php-fpm config
 echo -n "Updating php-fpm config"
-sed -i www.conf s/listen\ \=\ 127\.0\.0\.1\:9000/listen\ \=\ \\/var\\/run\\/php74\-fpm\.sock/g /usr/local/etc/php-fpm.d/www.conf
 sed -i www.conf s/\;listen\.owner\ \=\ www/listen\.owner\ \=\ www/g /usr/local/etc/php-fpm.d/www.conf
 sed -i www.conf s/\;listen\.group\ \=\ www/listen\.group\ \=\ www/g /usr/local/etc/php-fpm.d/www.conf
 sed -i www.conf s/\;listen\.mode\ \=\ 0660/listen\.mode\ \=\ 0660/g /usr/local/etc/php-fpm.d/www.conf
