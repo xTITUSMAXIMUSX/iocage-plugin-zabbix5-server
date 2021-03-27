@@ -44,7 +44,7 @@ echo -n " ok"
 # Creating zabbix DB and user
 echo -n "Creating Zabbix DB and user"
 service mysql-server start
-mysql_random_pass=$(openssl rand -base64 8)
+mysql_random_pass=$(openssl rand -hex 10)
 mysql_admin_pass=$(awk NR==2 /root/.mysql_secret)
 mysql -u root -p$mysql_admin_pass -e "create database zabbix character set utf8 collate utf8_bin;"
 mysql -u root -p$mysql_admin_pass -e "CREATE USER 'zabbix'@'localhost' IDENTIFIED BY '$mysql_random_pass';"
