@@ -77,16 +77,14 @@ chown -R www:www /usr/local/www/zabbix5/conf/
 sed -i zabbix_server.conf "s/# DBPassword=/DBPassword=$mysql_random_pass/g" /usr/local/etc/zabbix5/zabbix_server.conf
 
 #Adding Usernames and passwords to post install notes
-echo "Adding post install notes"
  echo "Mysql Root Password: $mysql_admin_random_pass" > /root/PLUGIN_INFO
  echo "Mysql zabbix DB: zabbix" >> /root/PLUGIN_INFO
  echo "Mysql zabbix User: zabbix" >> /root/PLUGIN_INFO
  echo "Mysql zabbix Password: $mysql_random_pass" >> /root/PLUGIN_INFO
-echo "Complete!"
 } &> /dev/null
 
 # Starting services
-echo -n "Staring services"
+echo -n "Staring services..."
 {
 service nginx start 
 service zabbix_agentd start 
