@@ -70,6 +70,8 @@ echo "Mysql Root Password: $mysql_admin_random_pass" > /root/PLUGIN_INFO
 echo "Mysql zabbix DB: zabbix" >> /root/PLUGIN_INFO
 echo "Mysql zabbix User: zabbix" >> /root/PLUGIN_INFO
 echo "Mysql zabbix Password: $mysql_random_pass" >> /root/PLUGIN_INFO
+echo "Defualt Web Username: Admin" >> /root/PLUGIN_INFO
+echo "Defualt Web Password: zabbix" >> /root/PLUGIN_INFO
 
 # Starting services
 echo -n "Staring services..."
