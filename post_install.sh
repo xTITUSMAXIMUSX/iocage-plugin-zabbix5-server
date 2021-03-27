@@ -13,7 +13,7 @@ echo " ok"
 echo -n "Creating Zabbix config files"
  cp /usr/local/etc/zabbix5/zabbix_agentd.conf.sample /usr/local/etc/zabbix5/zabbix_agentd.conf
  cp /usr/local/etc/zabbix5/zabbix_server.conf.sample /usr/local/etc/zabbix5/zabbix_server.conf
- cp /usr/local/www/zabbix5/conf/zabbix.conf.php.example /usr/local/www/zabbix5/conf/zabbix.conf.php
+ chown -R www:www /usr/local/www/zabbix5/conf/
 echo " ok"
 
 # update nginx conf
@@ -34,6 +34,7 @@ echo " ok"
 
 # Update PHP.ini
 echo -n "Updating php.ini config"
+cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 sed -i php.ini s/post\_max\_size\ \=\ 8M/post\_max\_size\ \=\ 16M/g /usr/local/etc/php.ini
 sed -i php.ini s/max\_execution\_time\ \=\ 30/max\_execution\_time\ \=\ 300/g /usr/local/etc/php.ini
 sed -i php.ini s/max\_input\_time\ \=\ 60/max\_input\_time\ \=\ 300/g /usr/local/etc/php.ini
