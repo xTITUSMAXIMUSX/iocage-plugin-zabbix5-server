@@ -2,26 +2,26 @@
 
 #enable all services
 echo -n "Enabling all services"
-sysrc zabbix_agentd_enable="YES"
-sysrc zabbix_server_enable="YES"
-sysrc nginx_enable="YES"
-sysrc php_fpm_enable="YES"
-sysrc mysql_enable="YES"
+sysrc zabbix_agentd_enable="YES" > /dev/null
+sysrc zabbix_server_enable="YES" > /dev/null
+sysrc nginx_enable="YES" > /dev/null
+sysrc php_fpm_enable="YES" > /dev/null
+sysrc mysql_enable="YES" > /dev/null
 echo " ok"
 
 # Copy sample files to config files
 echo -n "Creating Zabbix config files"
 ZABBIX_CONFIG_URI="https://raw.githubusercontent.com/xTITUSMAXIMUSX/iocage-plugin-zabbix5-server/master/zabbix.conf.php"
-/usr/bin/fetch -o /usr/local/www/zabbix5/conf/zabbix.conf.php ${ZABBIX_CONFIG_URI}
-cp /usr/local/etc/zabbix5/zabbix_agentd.conf.sample /usr/local/etc/zabbix5/zabbix_agentd.conf
-cp /usr/local/etc/zabbix5/zabbix_server.conf.sample /usr/local/etc/zabbix5/zabbix_server.conf
+/usr/bin/fetch -o /usr/local/www/zabbix5/conf/zabbix.conf.php ${ZABBIX_CONFIG_URI} > /dev/null
+cp /usr/local/etc/zabbix5/zabbix_agentd.conf.sample /usr/local/etc/zabbix5/zabbix_agentd.conf > /dev/null
+cp /usr/local/etc/zabbix5/zabbix_server.conf.sample /usr/local/etc/zabbix5/zabbix_server.conf> /dev/null
 echo " ok"
 
 # update nginx conf
 NGINX_CONFIG_URI="https://raw.githubusercontent.com/xTITUSMAXIMUSX/iocage-plugin-zabbix5-server/master/nginx.conf"
 echo -n "Updating nginx config..."
 rm /usr/local/etc/nginx/nginx.conf
-/usr/bin/fetch -o /usr/local/etc/nginx/nginx.conf ${NGINX_CONFIG_URI}
+/usr/bin/fetch -o /usr/local/etc/nginx/nginx.conf ${NGINX_CONFIG_URI} > /dev/null
 chown www:www /usr/local/etc/nginx/nginx.conf
 echo " ok"
 
@@ -39,7 +39,7 @@ sed -i php.ini s/post\_max\_size\ \=\ 8M/post\_max\_size\ \=\ 16M/g /usr/local/e
 sed -i php.ini s/max\_execution\_time\ \=\ 30/max\_execution\_time\ \=\ 300/g /usr/local/etc/php.ini
 sed -i php.ini s/max\_input\_time\ \=\ 60/max\_input\_time\ \=\ 300/g /usr/local/etc/php.ini
 sed -i php.ini s/\;date\.timezone\ \=\/date\.timezone\ \=\ America\\/Chicago/g /usr/local/etc/php.ini
-echo -n " ok"
+echo " ok"
 
 # Creating zabbix DB and user
 echo -n "Creating Zabbix DB and user"
@@ -51,27 +51,27 @@ echo "set password = password('$mysql_admin_random_pass'); flush privileges;" >>
 echo "create database zabbix character set utf8 collate utf8_bin;" >> createzabbixuser.sql
 echo "CREATE USER 'zabbix'@'localhost' IDENTIFIED BY '$mysql_random_pass';" >> createzabbixuser.sql
 echo "GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'localhost';" >> createzabbixuser.sql
-mysql -u root --password="$mysql_admin_pass" --connect-expired-password < updateroot.sql
-mysql -u root --password="$mysql_admin_random_pass" < createzabbixuser.sql
-mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/schema.sql
-mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/images.sql
-mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/data.sql
-echo -n " ok"
+mysql -u root --password="$mysql_admin_pass" --connect-expired-password < updateroot.sql > /dev/null
+mysql -u root --password="$mysql_admin_random_pass" < createzabbixuser.sql > /dev/null
+mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/schema.sql > /dev/null
+mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/images.sql > /dev/null
+mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/data.sql > /dev/null
+echo " ok"
 
 # update zabbix.conf.php file
 sed -i zabbix.conf.php "9s/'';/'$mysql_random_pass';/g" /usr/local/www/zabbix5/conf/zabbix.conf.php
-chown -R www:www /usr/local/www/zabbix5/conf/
+chown -R www:www /usr/local/www/zabbix5/conf/ > /dev/null
 
 # Add DB password to zabbix server config
 sed -i zabbix_server.conf "s/# DBPassword=/DBPassword=$mysql_random_pass/g" /usr/local/etc/zabbix5/zabbix_server.conf
 
 # Starting services
 echo -n "Staring services"
-service nginx start
-service zabbix_agentd start
-service zabbix_server start
-service php-fpm start
-echo -n " ok"
+service nginx start > /dev/null
+service zabbix_agentd start > /dev/null
+service zabbix_server start > /dev/null
+service php-fpm start > /dev/null
+echo " ok"
 
 #Adding Usernames and passwords to post install notes
 echo -n "Adding post install notes"
