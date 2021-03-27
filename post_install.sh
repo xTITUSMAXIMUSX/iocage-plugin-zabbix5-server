@@ -46,17 +46,20 @@ echo -n "Creating Zabbix DB and user"
 service mysql-server start
 mysql_random_pass=$(openssl rand -hex 10)
 mysql_admin_pass=$(awk NR==2 /root/.mysql_secret)
-mysql -u root -p$mysql_admin_pass -e "create database zabbix character set utf8 collate utf8_bin;"
-#mysql -u root -p$mysql_admin_pass -e "CREATE USER 'zabbix'@'localhost' IDENTIFIED BY '$mysql_random_pass';"
-#mysql -u root -p$mysql_admin_pass -e "ALTER USER 'zabbix'@'localhost' IDENTIFIED WITH mysql_native_password BY '$mysql_random_pass';"
-#mysql -u root -p$mysql_admin_pass -e "GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'localhost';"
-mysql -u root -p$mysql_admin_pass zabbix < /usr/local/share/zabbix5/server/database/mysql/schema.sql
-mysql -u root -p$mysql_admin_pass zabbix < /usr/local/share/zabbix5/server/database/mysql/images.sql
-mysql -u root -p$mysql_admin_pass zabbix < /usr/local/share/zabbix5/server/database/mysql/data.sql
+mysql_admin_random_pass=$(openssl rand -hex 10)
+echo "create database zabbix character set utf8 collate utf8_bin;" >> create.sql
+echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '$mysql_admin_random_pass'; flush privileges;" >> create.sql
+echo "CREATE USER 'zabbix'@'localhost' IDENTIFIED BY '$mysql_random_pass';" >> create.sql
+#echo "ALTER USER 'zabbix'@'localhost' IDENTIFIED WITH mysql_native_password BY '$mysql_random_pass';" >> create.sql
+echo "GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'localhost';" >> create.sql
+mysql -u root --password="$mysql_admin_pass" --connect-expired-password < reset_pass.sql
+mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/schema.sql
+mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/images.sql
+mysql -u root --password="$mysql_admin_random_pass" zabbix < /usr/local/share/zabbix5/server/database/mysql/data.sql
 echo -n " ok"
 
 # update zabbix.conf.php file
-sed -i zabbix.conf.php "9s/'';/'$mysql_admin_pass';/g" /usr/local/www/zabbix5/conf/zabbix.conf.php
+sed -i zabbix.conf.php "9s/'';/'$mysql_random_pass';/g" /usr/local/www/zabbix5/conf/zabbix.conf.php
 chown -R www:www /usr/local/www/zabbix5/conf/
 
 # Starting services
